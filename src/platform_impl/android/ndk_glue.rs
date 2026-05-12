@@ -423,6 +423,11 @@ pub unsafe fn onActivityCreate(
   let vm = env.get_java_vm().unwrap();
   let thread_env = vm.attach_current_thread_as_daemon().unwrap();
 
+  ndk_context::initialize_android_context(
+    vm.get_java_vm_pointer() as *mut _,
+    activity.as_obj().as_raw() as *mut _,
+  );
+
   CONTEXTS.lock().unwrap().insert(
     activity_id,
     AndroidContext {
